@@ -6,6 +6,7 @@ import (
 	"EnglishCorner/src/router"
 	"EnglishCorner/src/utils/config"
 	"EnglishCorner/src/utils/log"
+	"fmt"
 	"os"
 )
 
@@ -31,4 +32,13 @@ func InitData() {
 	helps.CreateTable()
 	basePath, _ := os.Getwd()
 	helps.InitData(basePath + "/src/conf/dict.text")
+}
+
+func Import(file string) {
+	initBase()
+	//helps.DeleteTableData()
+	//helps.CreateTable()
+	basePath, _ := os.Getwd()
+	fmt.Println(file)
+	helps.ImportFile(basePath+"/src/conf/", file)
 }
