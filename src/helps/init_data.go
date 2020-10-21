@@ -9,6 +9,7 @@ import (
 	"io"
 	"math"
 	"os"
+	"strings"
 )
 
 func CreateTable() {
@@ -59,6 +60,10 @@ func InitData(name string) {
 		if i%2 == 0 {
 			continue
 		}
+		str = strings.ToLower(str)
+		str = strings.Trim(str, "\n")
+		str = strings.Trim(str, "\r")
+		str = strings.Trim(str, "\r\n")
 		words = append(words, models.Word{Name: str})
 
 	}
@@ -71,7 +76,6 @@ func InitData(name string) {
 	flag := 2000
 	f = float64(length) / float64(flag)
 	c := int(math.Ceil(f))
-	fmt.Println(c)
 	for i := 0; i < c; i++ {
 		if (i + 1) == c {
 			// 最后一次

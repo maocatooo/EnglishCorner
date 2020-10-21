@@ -39,7 +39,10 @@ func Words(c *gin.Context) {
 	if !ok {
 		c.JSON(422, words)
 	}
-	res := DB.First(&words, id)
+	res := DB.Preload(
+		"Sentences").Preload(
+		"Translations").Preload(
+		"Translations").First(&words, id)
 	if res.Error != nil {
 		c.JSON(422, gin.H{})
 		return

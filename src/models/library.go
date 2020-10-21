@@ -10,3 +10,9 @@ type Library struct {
 func (Library) TableName() string {
 	return "librarys"
 }
+
+func CreateLibrary(name string) (l *Library) {
+	l = new(Library)
+	l.Name = name
+	return
+}

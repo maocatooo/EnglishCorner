@@ -31,7 +31,7 @@ func InitData() {
 	helps.DeleteTableData()
 	helps.CreateTable()
 	basePath, _ := os.Getwd()
-	helps.InitData(basePath + "/src/conf/dict.text")
+	helps.InitData(basePath + "/src/conf/dict.txt")
 }
 
 func Import(file string) {

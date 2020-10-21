@@ -2,6 +2,9 @@ package db
 
 import (
 	"EnglishCorner/src/utils/log"
+	"gorm.io/gorm/logger"
+	"time"
+
 	//"gorm.io/driver/sqlite"
 	"EnglishCorner/src/utils/config"
 	"gorm.io/driver/mysql"
@@ -16,10 +19,19 @@ func InitDB() {
 	var err error
 	dns := config.DateBaseConf.DNS()
 	log.Debug(dns)
-	db, err = gorm.Open(mysql.Open(dns), &gorm.Config{})
+	db, err = gorm.Open(mysql.Open(dns), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Error),
+	})
+
 	if err != nil {
 		log.Error("数据库链接失败")
 		panic("failed to connect database")
+	}
+	sqlDB, err := db.DB()
+	{
+		sqlDB.SetMaxIdleConns(50)
+		sqlDB.SetMaxOpenConns(50)
+		sqlDB.SetConnMaxLifetime(time.Minute)
 	}
 }
 
