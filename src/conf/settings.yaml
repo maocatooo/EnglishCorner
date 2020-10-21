@@ -1,0 +1,21 @@
+settings:
+  application:
+    domain: localhost:8002
+    host: 0.0.0.0
+    ishttps: false
+    mode: d
+    name: EnglishCorner
+    port: 8002
+    readtimeout: 1
+    writertimeout: 2
+  database:
+    dbtype: mysql
+    host: 127.0.0.1
+    dbname: englishcorner
+    password: 123456
+    port: 3306
+    username: root
+  redis:
+    url: redis://127.0.0.1:6379
+  logs:
+    logdir: .
