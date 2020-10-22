@@ -10,5 +10,6 @@ func InitRouter() *gin.Engine {
 	r.Use(middleware.Logger(), middleware.Cors())
 	v1 := r.Group("/api/v1")
 	wordsRouter(v1)
+	libraryRouter(v1)
 	return r
 }

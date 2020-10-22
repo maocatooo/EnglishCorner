@@ -8,11 +8,11 @@ import (
 func wordsRouter(rg *gin.RouterGroup) {
 
 	{
-		wrg := rg.Group("/words")
-		rga := wrg.Use()
-		rga.GET("/", apis.WordsList)
-		rga.POST("/", apis.WordsPost)
-		rga.GET("/:id", apis.Words)
-		rga.POST("/upload", apis.Upload)
+		rg := rg.Group("/words")
+		ga := rg.Use()
+		ga.GET("", apis.WordsList)
+		ga.POST("", apis.WordsPost)
+		ga.GET("/:id", apis.Words)
+		ga.POST("/upload", apis.Upload)
 	}
 }

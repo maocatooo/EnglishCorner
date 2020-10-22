@@ -23,7 +23,6 @@ func WordsList(c *gin.Context) {
 	}
 	DB.Preload(
 		"Sentences").Preload(
-		"Translations").Preload(
 		"Translations").Where(
 		"id >= ?", id).Limit(
 		10).Find(&words, id)
@@ -41,7 +40,6 @@ func Words(c *gin.Context) {
 	}
 	res := DB.Preload(
 		"Sentences").Preload(
-		"Translations").Preload(
 		"Translations").First(&words, id)
 	if res.Error != nil {
 		c.JSON(422, gin.H{})
