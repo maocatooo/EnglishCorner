@@ -11,5 +11,6 @@ func libraryRouter(rg *gin.RouterGroup) {
 		g := rg.Group("/library")
 		ga := g.Use()
 		ga.GET("", apis.LibraryList)
+		ga.GET("/:id/words", apis.LibraryWords)
 	}
 }
