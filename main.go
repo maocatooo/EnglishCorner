@@ -1,7 +1,7 @@
 package main
 
 import (
-	"EnglishCorner/src/server/cmd"
+	"EnglishCorner/server/cmd"
 )
 
 func main() {
