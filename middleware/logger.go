@@ -2,7 +2,7 @@ package middleware
 
 import (
 	_ "EnglishCorner/utils"
-	"fmt"
+	"EnglishCorner/utils/log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -37,7 +37,7 @@ func Logger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 
 		// 日志格式
-		fmt.Printf("%s %3d %13v %15s %s %s \n",
+		log.Infof(" %s %3d %13v %15s %s %s",
 			startTime.Format("2006-01-02 15:04:05.9999"),
 			statusCode,
 			latencyTime,
@@ -45,13 +45,5 @@ func Logger() gin.HandlerFunc {
 			reqMethod,
 			reqUri,
 		)
-		//log.Infof(" %s %3d %13v %15s %s %s",
-		//	startTime.Format("2006-01-02 15:04:05.9999"),
-		//	statusCode,
-		//	latencyTime,
-		//	clientIP,
-		//	reqMethod,
-		//	reqUri,
-		//)
 	}
 }

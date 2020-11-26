@@ -10,65 +10,62 @@ import (
 )
 
 type log struct {
-	logObj *zap.SugaredLogger
-	Funcf  func(string, ...interface{})
-	Func   func(...interface{})
+	logObj                *zap.SugaredLogger
+	Infof, Debugf, Errorf func(string, ...interface{})
+	Info, Debug, Error    func(...interface{})
 }
 
-var log_info *log
-var log_error *log
-var log_debug *log
+var logobj *log
 
-func main() {
-	InitLogger()
-	defer log_info.logObj.Sync()
-	defer log_error.logObj.Sync()
-	defer log_debug.logObj.Sync()
-}
 func defaultPrintln(a ...interface{}) {
 	fmt.Println(a...)
 }
+
 func defaultPrintf(fmtString string, a ...interface{}) {
 	fmt.Printf(fmtString, a...)
 }
-func registerLogger(logType string) *zap.SugaredLogger {
 
-	writeSyncer := getLogWriter(logType)
+func registerLogger() *zap.SugaredLogger {
+
+	errorSyncer := getLogWriter("error")
+	infoSyncer := getLogWriter("info")
+	debugSyncer := getLogWriter("debug")
+	ErrorLevel := zap.LevelEnablerFunc(func(lev zapcore.Level) bool {
+		return lev == zap.ErrorLevel
+	})
+	DebugLevel := zap.LevelEnablerFunc(func(lev zapcore.Level) bool {
+		return lev == zap.DebugLevel
+	})
+	InfoLevel := zap.LevelEnablerFunc(func(lev zapcore.Level) bool {
+		return lev == zap.InfoLevel
+	})
 	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
+	error_core := zapcore.NewCore(encoder, errorSyncer, ErrorLevel)
+	info_core := zapcore.NewCore(encoder, infoSyncer, InfoLevel)
+	debug_core := zapcore.NewCore(encoder, debugSyncer, DebugLevel)
 
-	logger := zap.New(core, zap.AddCaller())
+	logger := zap.New(zapcore.NewTee(error_core, info_core, debug_core), zap.AddCaller())
 	return logger.Sugar()
 }
+
+// 初始化日志
 func InitLogger() {
-	log_info = new(log)
-	log_debug = new(log)
-	log_error = new(log)
+	logobj = new(log)
+
 	if gin.Mode() != gin.DebugMode {
-		log_info.logObj = registerLogger("info")
+		logobj.logObj = registerLogger()
 		{
-			log_info.Func = log_info.logObj.Info
-			log_info.Funcf = log_info.logObj.Infof
-		}
-		log_debug.logObj = registerLogger("debug")
-		{
-			log_debug.Func = log_debug.logObj.Debug
-			log_debug.Funcf = log_debug.logObj.Debugf
-		}
-		log_error.logObj = registerLogger("error")
-		{
-			log_error.Func = log_error.logObj.Error
-			log_error.Funcf = log_error.logObj.Errorf
+			logobj.Info = logobj.logObj.Info
+			logobj.Infof = logobj.logObj.Infof
+			logobj.Errorf = logobj.logObj.Errorf
+			logobj.Error = logobj.logObj.Error
+			logobj.Debug = logobj.logObj.Debug
+			logobj.Debugf = logobj.logObj.Debugf
 		}
 	} else {
-		{
-			log_info.Func = defaultPrintln
-			log_info.Funcf = defaultPrintf
-			log_error.Func = defaultPrintln
-			log_error.Funcf = defaultPrintf
-			log_debug.Func = defaultPrintln
-			log_debug.Funcf = defaultPrintf
-		}
+		logobj.Info, logobj.Error, logobj.Debug = defaultPrintln, defaultPrintln, defaultPrintln
+		logobj.Infof, logobj.Errorf, logobj.Debugf = defaultPrintf, defaultPrintf, defaultPrintf
+
 	}
 
 }
@@ -92,23 +89,23 @@ func getLogWriter(logType string) zapcore.WriteSyncer {
 }
 
 func Info(args ...interface{}) {
-	log_info.Func(args...)
+	logobj.Info(args...)
 }
 
 func Infof(format string, args ...interface{}) {
-	log_info.Funcf(format, args...)
+	logobj.Infof(format, args...)
 }
 func Debug(args ...interface{}) {
-	log_debug.Func(args...)
+	logobj.Debug(args...)
 }
 func Debugf(format string, args ...interface{}) {
-	log_debug.Funcf(format, args...)
+	logobj.Debugf(format, args...)
 }
 
 func Error(args ...interface{}) {
-	log_error.Func(args...)
+	logobj.Error(args...)
 }
 
 func Errorf(format string, args ...interface{}) {
-	log_error.Funcf(format, args...)
+	logobj.Errorf(format, args...)
 }

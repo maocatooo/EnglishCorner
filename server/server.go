@@ -6,7 +6,6 @@ import (
 	"EnglishCorner/router"
 	"EnglishCorner/utils/config"
 	"EnglishCorner/utils/log"
-	"fmt"
 	"os"
 )
 
@@ -21,9 +20,9 @@ func initBase() {
 }
 func RunServer() {
 	initBase()
-	helps.CreateTable()
+	//helps.CreateTable()
 	r := router.InitRouter()
-	r.Run(":8011")
+	_ = r.Run(":8011")
 }
 
 func InitData() {
@@ -39,6 +38,5 @@ func Import(file string) {
 	//helps.DeleteTableData()
 	//helps.CreateTable()
 	basePath, _ := os.Getwd()
-	fmt.Println(file)
 	helps.ImportFile(basePath+"/conf/", file)
 }
