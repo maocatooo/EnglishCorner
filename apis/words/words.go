@@ -1,4 +1,4 @@
-package apis
+package words
 
 import (
 	"EnglishCorner/db"

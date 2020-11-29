@@ -11,5 +11,6 @@ func InitRouter() *gin.Engine {
 	v1 := r.Group("/api/v1")
 	wordsRouter(v1)
 	libraryRouter(v1)
+	authRouter(v1)
 	return r
 }

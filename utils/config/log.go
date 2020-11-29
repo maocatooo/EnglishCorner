@@ -6,7 +6,7 @@ import (
 )
 
 type LogConfig struct {
-	LogDir string //账号
+	LogDir string //日志存路径
 }
 
 func InitLog(cfg *viper.Viper) *LogConfig {

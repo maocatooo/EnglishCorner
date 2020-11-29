@@ -16,6 +16,7 @@ func initBase() {
 	config.SetMode()
 	log.InitLogger()
 	db.InitDB()
+	db.InitRedis()
 
 }
 func RunServer() {

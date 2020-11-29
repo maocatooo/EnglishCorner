@@ -1,7 +1,7 @@
 package router
 
 import (
-	"EnglishCorner/apis"
+	"EnglishCorner/apis/words"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,9 +10,9 @@ func wordsRouter(rg *gin.RouterGroup) {
 	{
 		rg := rg.Group("/words")
 		ga := rg.Use()
-		ga.GET("", apis.WordsList)
-		ga.POST("", apis.WordsPost)
-		ga.GET("/:id", apis.Words)
-		ga.POST("/upload", apis.Upload)
+		ga.GET("", words.WordsList)
+		ga.POST("", words.WordsPost)
+		ga.GET("/:id", words.Words)
+		ga.POST("/upload", words.Upload)
 	}
 }

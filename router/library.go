@@ -1,7 +1,7 @@
 package router
 
 import (
-	"EnglishCorner/apis"
+	"EnglishCorner/apis/library"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,7 +10,7 @@ func libraryRouter(rg *gin.RouterGroup) {
 	{
 		g := rg.Group("/library")
 		ga := g.Use()
-		ga.GET("", apis.LibraryList)
-		ga.GET("/:id/words", apis.LibraryWords)
+		ga.GET("", library.LibraryList)
+		ga.GET("/:id/words", library.LibraryWords)
 	}
 }
