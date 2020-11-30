@@ -1,4 +1,4 @@
-package pkg
+package jwt
 
 import (
 	"EnglishCorner/models"
@@ -12,7 +12,7 @@ type EcClaims struct {
 	User models.User `json:"user"`
 }
 
-const TokenExpireDuration = time.Hour * 2
+const TokenExpireDuration = time.Hour * 24 * 3
 
 var Secret = []byte("ec")
 
@@ -27,6 +27,11 @@ func GetClaims(user models.User) EcClaims {
 	c.ExpiresAt = GetExTime()
 	c.Issuer = string(Secret)
 	return c
+}
+
+func GetToken(user models.User) (string, error) {
+	c := GetClaims(user)
+	return GenToken(c)
 }
 
 // GenToken 生成JWT

@@ -21,7 +21,7 @@ func initBase() {
 }
 func RunServer() {
 	initBase()
-	//helps.CreateTable()
+	helps.CreateTable()
 	r := router.InitRouter()
 	_ = r.Run(":8011")
 }

@@ -1,9 +1,10 @@
-package pkg
+package captcha
 
 import (
 	"EnglishCorner/utils"
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"github.com/dchest/captcha"
 	"time"
 )
@@ -58,11 +59,15 @@ func Captcha(length ...int) (string, string) {
 //	return nil
 //}
 
+func PNGTemplate(img string) string {
+	return fmt.Sprintf("data:image/png;base64,%s", img)
+}
+
 func Serve(id string, width, height int) string {
 	var content bytes.Buffer
 	captcha.WriteImage(&content, id, width, height)
-
-	return base64.StdEncoding.EncodeToString(content.Bytes())
+	img := base64.StdEncoding.EncodeToString(content.Bytes())
+	return PNGTemplate(img)
 }
 
 func CaptchaVerify(captchaId, code string) bool {
