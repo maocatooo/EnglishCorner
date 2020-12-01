@@ -48,6 +48,7 @@ func RegisterAuth(c *gin.Context) {
 	defer r.Close()
 	err = c.ShouldBindJSON(&ru)
 	if err != nil {
+
 		rep.ParamsError(c, "参数错误")
 		return
 	}
@@ -89,8 +90,10 @@ func LoginAuth(c *gin.Context) {
 		err  error
 		eMsg = "邮箱密码错误"
 	)
+
 	err = c.ShouldBindJSON(&ru)
 	if err != nil {
+
 		rep.ParamsError(c, "参数错误")
 		return
 	}
