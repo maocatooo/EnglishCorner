@@ -37,7 +37,7 @@ func Logger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 
 		// 日志格式
-		log.Infof(" %s %3d %13v %15s %s %s",
+		log.Infof(" %s %3d %13v %15s %s %s \n",
 			startTime.Format("2006-01-02 15:04:05.9999"),
 			statusCode,
 			latencyTime,

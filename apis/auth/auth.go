@@ -6,9 +6,12 @@ import (
 	"EnglishCorner/pkg/captcha"
 	"EnglishCorner/pkg/jwt"
 	rep "EnglishCorner/utils/resful/response"
+	"encoding/json"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
 	"time"
 )
 
@@ -43,7 +46,7 @@ func RegisterAuth(c *gin.Context) {
 		user  models.User
 	)
 	defer r.Close()
-	err = c.BindJSON(&ru)
+	err = c.ShouldBindJSON(&ru)
 	if err != nil {
 		rep.ParamsError(c, "参数错误")
 		return
@@ -86,21 +89,36 @@ func LoginAuth(c *gin.Context) {
 		err  error
 		eMsg = "邮箱密码错误"
 	)
-	err = c.BindJSON(&ru)
+	err = c.ShouldBindJSON(&ru)
 	if err != nil {
 		rep.ParamsError(c, "参数错误")
 		return
 	}
 	res := DB.Model(models.User{}).Where("email = ?", ru.Email).First(&user)
 	if res.RowsAffected < 1 || !user.ComparePasswords(ru.Password) {
-		fmt.Println(res.Error)
 		rep.ParamsError(c, eMsg)
 		return
 	}
+	user.PasswordHash = ""
 	token, _ := jwt.GetToken(user)
 
 	rep.OK(c, gin.H{
 		"token": token,
 		"user":  user,
 	})
+}
+
+func WeChatLogin(c *gin.Context) {
+	res, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code")
+	if err != nil {
+
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+	var r map[string]interface{}
+	err = json.Unmarshal(body, &r)
+	if err != nil {
+
+	}
+	//res.Body.Read()
+
 }

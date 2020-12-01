@@ -7,11 +7,17 @@ import (
 
 // 用户
 
+var AnonymousUser = User{
+	ID:       0,
+	Username: "Anonymous User",
+	Email:    "Email@not.email",
+}
+
 type User struct {
 	ID           uint      `json:"id"`
 	Username     string    `json:"username"`
 	Email        string    `json:"email"`
-	PasswordHash string    `json:"password_hash"`
+	PasswordHash string    `json:"-"`
 	Openid       string    `json:"openid"`    // 微信登录openid
 	LastTime     time.Time `json:"last_time"` // 微信登录openid
 
