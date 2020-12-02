@@ -105,23 +105,74 @@ func LoginAuth(c *gin.Context) {
 	user.PasswordHash = ""
 	token, _ := jwt.GetToken(user)
 
-	rep.OK(c, gin.H{
+	rep.OKAndTell(c, gin.H{
 		"token": token,
 		"user":  user,
-	})
+	}, "login success")
 }
 
-func WeChatLogin(c *gin.Context) {
-	res, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code")
+func GetOpenid(code string) (string, bool) {
+	var url = fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+		"wxa891caa4f40cf683", "684a3375b12d426f65039851b87f550c", code)
+	res, err := http.Get(url)
 	if err != nil {
-
+		return "", false
 	}
 	body, _ := ioutil.ReadAll(res.Body)
 	var r map[string]interface{}
 	err = json.Unmarshal(body, &r)
+	fmt.Println(r)
 	if err != nil {
-
+		return "", false
 	}
-	//res.Body.Read()
+	return r["openid"].(string), true
+}
+
+func WeChatLogin(c *gin.Context) {
+	var (
+		DB      = db.GetDB()
+		user    models.User
+		isLogin = false
+	)
+	u, ok := c.Get("user")
+	if ok && u.(models.User).ID != 0 {
+		isLogin = true
+		user = u.(models.User)
+	}
+	code, ok := c.Params.Get("code")
+	if !ok {
+		rep.ParamsError(c, code)
+		c.Abort()
+		return
+	}
+	oid, ok := GetOpenid(code)
+	if !ok {
+		rep.ParamsError(c, code)
+		c.Abort()
+		return
+	}
+	if isLogin {
+		res := DB.Model(models.User{}).Where("id = ?", user.ID).Update("openid", oid)
+		//res := DB.Model(models.User{}).Where("openid = ?", oid).First(&user)
+		if res.Error != nil {
+			rep.ParamsError(c, code)
+			c.Abort()
+			return
+		}
+	} else {
+		res := DB.Model(models.User{}).Where("openid = ?", oid).First(&user)
+		if res.Error != nil {
+			rep.ParamsError(c, code)
+			c.Abort()
+			return
+		}
+	}
+
+	user.PasswordHash = ""
+	token, _ := jwt.GetToken(user)
+	rep.OKAndTell(c, gin.H{
+		"token": token,
+		"user":  user,
+	}, "login success")
 
 }

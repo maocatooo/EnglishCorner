@@ -36,6 +36,9 @@ func Tell(c *gin.Context, msg string) {
 func OK(c *gin.Context, data interface{}) {
 	resultResponse(c, success, data, "")
 }
+func OKAndTell(c *gin.Context, data interface{}, msg string) {
+	resultResponse(c, success, data, msg)
+}
 
 func ServerError(c *gin.Context, msg string) {
 	resultResponse(c, server_error, nil, msg)
