@@ -20,7 +20,7 @@ type User struct {
 	PasswordHash string    `json:"-"`
 	Openid       string    `json:"openid"`    // 微信登录openid
 	LastTime     time.Time `json:"last_time"` // 微信登录openid
-
+	Library      []Library `json:"library"`
 }
 
 func (User) TableName() string {

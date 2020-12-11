@@ -63,6 +63,7 @@ func RegisterAuth(c *gin.Context) {
 	captchaId, _ := redis.String(r.Do("get", ru.Key))
 	fmt.Println(captchaId)
 	if ok := captcha.CaptchaVerify(captchaId, ru.Code); !ok {
+		r.Do("delete", ru.Key)
 		rep.ParamsError(c, "验证码错误或已经过期")
 		return
 	} else {
