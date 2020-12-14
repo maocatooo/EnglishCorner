@@ -27,7 +27,7 @@ var runCmd = &cobra.Command{
 }
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "run server",
+	Short: "init data",
 	Run: func(cmd *cobra.Command, args []string) {
 		server.InitData()
 	},

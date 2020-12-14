@@ -5,7 +5,7 @@ type Library struct {
 	ID     uint    `json:"id"`
 	Name   string  `json:"name"`
 	Words  []*Word `json:"words" gorm:"many2many:library_words;"`
-	UserId int     `json:"user_id"`
+	UserID int     `json:"user_id"`
 }
 
 func (Library) TableName() string {

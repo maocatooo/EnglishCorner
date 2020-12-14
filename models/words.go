@@ -6,8 +6,8 @@ import (
 
 // 单词
 type Word struct {
-	ID uint `json:"id"`
-
+	ID           uint          `json:"id"`
+	Order        int           `json:"order"`
 	Name         string        `json:"name"`
 	MSounds      string        `json:"m_sounds"`
 	YSounds      string        `json:"y_sounds"`

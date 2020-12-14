@@ -19,7 +19,7 @@ func InitDB() {
 	dns := config.DateBaseConf.DNS()
 	log.Debug(dns)
 	db, err = gorm.Open(mysql.Open(dns), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Error),
+		Logger: logger.Default.LogMode(logger.Silent),
 	})
 
 	if err != nil {

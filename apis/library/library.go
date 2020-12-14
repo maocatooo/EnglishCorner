@@ -5,7 +5,6 @@ import (
 	"EnglishCorner/models"
 	"EnglishCorner/utils/resful/request"
 	"EnglishCorner/utils/resful/response"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,10 +13,9 @@ func LibraryList(c *gin.Context) {
 		ls []models.Library
 		DB = db.GetDB()
 	)
-	u, ok := c.Get("user")
-	fmt.Println(ok, u)
+	u, _ := c.Get("user")
 	o, l := request.GetOffsetLimit(c)
-	DB.Model(models.Library{}).Limit(l).Offset(o).Find(&ls)
+	DB.Model(models.Library{}).Where("id = null or user_id = ?", u.(models.User).ID).Limit(l).Offset(o).Find(&ls)
 	response.OK(c, ls)
 
 }
@@ -39,7 +37,7 @@ func LibraryWords(c *gin.Context) {
 		return
 	}
 	o, l := request.GetOffsetLimit(c)
-	DB.Model(&lb).Limit(l).Offset(o).Preload(
+	_ = DB.Model(&lb).Limit(l).Offset(o).Preload(
 		"Sentences").Preload(
 		"Translations").Association("Words").Find(&ws)
 	//DB.Limit(l).Offset(o).Find(&ls)
