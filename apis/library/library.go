@@ -15,7 +15,7 @@ func LibraryList(c *gin.Context) {
 	)
 	u, _ := c.Get("user")
 	o, l := request.GetOffsetLimit(c)
-	DB.Model(models.Library{}).Where("id = null or user_id = ?", u.(models.User).ID).Limit(l).Offset(o).Find(&ls)
+	DB.Model(models.Library{}).Where("public = true or user_id = ?", u.(models.User).ID).Limit(l).Offset(o).Find(&ls)
 	response.OK(c, ls)
 
 }

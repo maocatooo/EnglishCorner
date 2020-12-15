@@ -75,6 +75,7 @@ var s sync.WaitGroup
 func ImportFile(path, fileName string) {
 	var (
 		words []string
+		DB    = db.GetDB()
 	)
 	file, err := os.Open(path + fileName)
 	if err != nil {
@@ -97,6 +98,9 @@ func ImportFile(path, fileName string) {
 	fmt.Println(words[0])
 	ln := strings.TrimSuffix(fileName, ".txt")
 	l := models.CreateLibrary(ln)
+	l.Public = true
+	DB.Select("Name", "Public").Create(l)
+
 	for _, v := range words {
 		name := v
 		s.Add(1)
@@ -132,6 +136,8 @@ func createWord(word *models.Word, l *models.Library) {
 	if m.Status {
 		w, _ := models.SetWords(*m, l, word)
 		DB.Save(w)
+	} else {
+		fmt.Println("over! over!")
 	}
 
 }

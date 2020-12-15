@@ -16,11 +16,12 @@ func CreateTable() {
 	var (
 		DB = db.GetDB()
 	)
-	_ = DB.AutoMigrate(&models.Word{})
-	_ = DB.AutoMigrate(&models.Library{})
-	_ = DB.AutoMigrate(&models.Sentence{})
-	_ = DB.AutoMigrate(&models.Translation{})
-	_ = DB.AutoMigrate(&models.User{})
+	_ = DB.AutoMigrate(&models.Word{},
+		&models.User{},
+		&models.Library{},
+		&models.Sentence{},
+		&models.Translation{},
+		&models.LibraryWords{})
 }
 
 func DeleteTableData() {
@@ -34,6 +35,7 @@ func DeleteTableData() {
 	DB.Exec("DROP TABLE sentences")
 	DB.Exec("DROP TABLE translations")
 	DB.Exec("DROP TABLE words")
+	DB.Exec("DROP TABLE users")
 }
 
 func InitData(name string) {

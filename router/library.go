@@ -10,7 +10,7 @@ func libraryRouter(rg *gin.RouterGroup) {
 
 	{
 		g := rg.Group("/library")
-		ga := g.Use(middleware.JWTAuthMiddleware())
+		ga := g.Use(middleware.JWTAuthMiddleware(true))
 		ga.GET("", library.LibraryList)
 		ga.GET("/:id/words", library.LibraryWords)
 	}

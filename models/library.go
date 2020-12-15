@@ -6,10 +6,21 @@ type Library struct {
 	Name   string  `json:"name"`
 	Words  []*Word `json:"words" gorm:"many2many:library_words;"`
 	UserID int     `json:"user_id"`
+	Public bool    `json:"public"`
 }
 
 func (Library) TableName() string {
 	return "librarys"
+}
+
+type LibraryWords struct {
+	LibraryID uint
+	WordID    uint
+	ID        uint `gorm:"unique;autoIncrement:true"`
+}
+
+func (LibraryWords) TableName() string {
+	return "library_words"
 }
 
 func CreateLibrary(name string) (l *Library) {
