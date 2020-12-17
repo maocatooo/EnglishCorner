@@ -14,9 +14,9 @@ func (Library) TableName() string {
 }
 
 type LibraryWords struct {
-	LibraryID uint
-	WordID    uint
-	ID        uint `gorm:"unique;autoIncrement:true"`
+	LibraryID uint `json:"library_id"`
+	WordID    uint `json:"word_id"`
+	LWID      uint `json:"lwid" gorm:"unique;autoIncrement:true"`
 }
 
 func (LibraryWords) TableName() string {
