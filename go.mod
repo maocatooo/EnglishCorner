@@ -1,6 +1,6 @@
 module EnglishCorner
 
-go 1.15
+go 1.14
 
 require (
 	github.com/PuerkitoBio/goquery v1.6.0
@@ -29,7 +29,6 @@ require (
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392
 	golang.org/x/net v0.0.0-20201016165138-7b1cca2348c0 // indirect
-	golang.org/x/sys v0.0.0-20201018121011-98379d014ca7 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
